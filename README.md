@@ -130,6 +130,31 @@ Tắt toàn bộ:
 docker compose -f docker-compose.yml down
 ```
 
+## Run Prebuilt Image
+
+Image Docker Hub:
+
+- `nguyenson1710/shopapp-backend:latest`
+
+Chạy container backend (map cổng `8088`):
+
+```bash
+docker run -d --name shopapp-backend-image-run --network shopapp-network -p 8088:8088 \
+  -e SPRING_DATASOURCE_URL="jdbc:mysql://mysql8-container:3306/ShopApp?serverTimezone=UTC&allowPublicKeyRetrieval=true" \
+  -e MYSQL_ROOT_PASSWORD="Abc123456789@" \
+  -e REDIS_HOST="redis-container" \
+  -e REDIS_PORT="6379" \
+  -e KAFKA_BROKER_SERVER="kafka-broker-01" \
+  -e KAFKA_BROKER_PORT="19092" \
+  nguyenson1710/shopapp-backend:latest
+```
+
+Kiểm tra:
+
+```bash
+curl -i http://localhost:8088/api/v1/actuator/health
+```
+
 Ví dụ:
 
 ```powershell
