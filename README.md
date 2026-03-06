@@ -62,8 +62,7 @@ cd shopapp-backend
 ### 2) Chạy hạ tầng
 
 ```bash
-docker compose -f deployment.yaml up -d mysql8-container redis-container
-docker compose -f kafka-deployment.yaml up -d zookeeper-01 zookeeper-02 zookeeper-03 kafka-broker-01
+docker compose -f docker-compose.yml up -d mysql8-container redis-container zookeeper-01 zookeeper-02 zookeeper-03 kafka-broker-01
 ```
 
 ### 3) Import dữ liệu mẫu
@@ -109,6 +108,28 @@ Kết quả mong đợi: `HTTP 200` và status `UP`.
 - `start-all.cmd`
 - `stop-all.cmd`
 
+## Docker Compose (1 file)
+
+File chính: [docker-compose.yml](D:\PROJECT_INDIVIDUAL\shopapp-backend\docker-compose.yml)
+
+Chạy hạ tầng:
+
+```bash
+docker compose -f docker-compose.yml up -d mysql8-container redis-container zookeeper-01 zookeeper-02 zookeeper-03 kafka-broker-01
+```
+
+Chạy cả backend bằng container (profile `app`):
+
+```bash
+docker compose -f docker-compose.yml --profile app up -d
+```
+
+Tắt toàn bộ:
+
+```bash
+docker compose -f docker-compose.yml down
+```
+
 Ví dụ:
 
 ```powershell
@@ -147,8 +168,7 @@ Tham khảo file `.env.example`.
 - Nếu đã lỡ migrate sai hoặc DB lỗi, reset nhanh:
 
 ```bash
-docker compose -f deployment.yaml down -v
-docker compose -f kafka-deployment.yaml down -v
+docker compose -f docker-compose.yml down -v
 ```
 
 Sau đó chạy lại từ bước 2.

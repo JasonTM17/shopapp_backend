@@ -45,7 +45,7 @@ Write-Step "Stopping backend process"
 Stop-BackendProcesses
 
 Write-Step "Stopping infrastructure containers"
-$args = @("compose", "-f", "deployment.yaml", "-f", "kafka-deployment.yaml", "down")
+$args = @("compose", "-f", "docker-compose.yml", "down")
 if ($RemoveVolumes) {
     $args += "-v"
 }

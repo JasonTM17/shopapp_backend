@@ -107,7 +107,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Step "Starting infrastructure containers"
-docker compose -f deployment.yaml -f kafka-deployment.yaml up -d `
+docker compose -f docker-compose.yml up -d `
     mysql8-container `
     redis-container `
     zookeeper-01 `
