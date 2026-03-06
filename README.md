@@ -110,7 +110,7 @@ Kết quả mong đợi: `HTTP 200` và status `UP`.
 
 ## Docker Compose (1 file)
 
-File chính: [docker-compose.yml](D:\PROJECT_INDIVIDUAL\shopapp-backend\docker-compose.yml)
+File chính: `docker-compose.yml`
 
 Chạy hạ tầng:
 
@@ -170,6 +170,29 @@ Ví dụ:
 
 - Swagger UI: `http://localhost:8088/swagger-ui.html`
 - OpenAPI docs: `http://localhost:8088/api-docs`
+
+## Test Nhanh Bằng Postman
+
+Thư mục Postman đã có sẵn:
+
+- `postman/ShopApp_Backend.postman_collection.json`
+- `postman/ShopApp_Local.postman_environment.json`
+
+Các bước:
+
+1. Import cả 2 file vào Postman.
+2. Chọn environment `ShopApp Local`.
+3. Chạy request `Health - Actuator` để kiểm tra backend cổng `8088`.
+4. Nếu cần test API cần đăng nhập:
+   - cập nhật `login_email`, `login_password`, `role_id` trong environment
+   - chạy `Auth - Login` (token sẽ tự lưu vào `access_token`)
+   - chạy `Users - Details (Authorized)`.
+
+Lưu ý lỗi `Invalid character in header content ["Authorization"]`:
+
+- Không tự dán header `Authorization` trong tab Headers.
+- Chỉ dùng tab Authorization (Bearer Token) với biến token trong collection.
+- Nếu token có xuống dòng, dấu `"` hoặc tiền tố `Bearer ` bị dán lặp, collection đã tự làm sạch trước khi gửi.
 
 ## Biến Môi Trường Quan Trọng
 

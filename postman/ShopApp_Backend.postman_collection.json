@@ -1,0 +1,189 @@
+{
+  "info": {
+    "_postman_id": "d56a5fc3-6ab7-4d77-8f6f-3c2b4c03f1d2",
+    "name": "ShopApp Backend",
+    "description": "Collection for local testing ShopApp backend on port 8088.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const raw = (pm.environment.get(\"access_token\") || pm.collectionVariables.get(\"access_token\") || \"\").toString();",
+          "const cleaned = raw.replace(/^Bearer\\s+/i, \"\").replace(/[\\r\\n\\\"]/g, \"\").trim();",
+          "pm.variables.set(\"access_token_clean\", cleaned);"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Health - Actuator",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}{{api_prefix}}/actuator/health",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "{{api_prefix}}",
+            "actuator",
+            "health"
+          ]
+        },
+        "description": "Backend readiness endpoint."
+      },
+      "response": []
+    },
+    {
+      "name": "Health - Business",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}{{api_prefix}}/healthcheck/health",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "{{api_prefix}}",
+            "healthcheck",
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullname\": \"{{register_fullname}}\",\n  \"phone_number\": \"{{register_phone}}\",\n  \"email\": \"{{register_email}}\",\n  \"password\": \"{{register_password}}\",\n  \"retype_password\": \"{{register_password}}\",\n  \"address\": \"{{register_address}}\",\n  \"date_of_birth\": \"{{register_dob}}\",\n  \"facebook_account_id\": 0,\n  \"google_account_id\": 0,\n  \"role_id\": {{role_id}}\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}{{api_prefix}}/users/register",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "{{api_prefix}}",
+            "users",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Auth - Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "let payload = {};",
+              "try { payload = pm.response.json(); } catch (e) { payload = {}; }",
+              "const token = payload?.data?.token;",
+              "if (pm.response.code === 200 && token) {",
+              "  const cleaned = token.toString().replace(/^Bearer\\s+/i, \"\").replace(/[\\r\\n\\\"]/g, \"\").trim();",
+              "  pm.environment.set(\"access_token\", cleaned);",
+              "  pm.collectionVariables.set(\"access_token\", cleaned);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{login_email}}\",\n  \"phone_number\": \"{{login_phone}}\",\n  \"password\": \"{{login_password}}\",\n  \"role_id\": {{role_id}}\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}{{api_prefix}}/users/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "{{api_prefix}}",
+            "users",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Users - Details (Authorized)",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token_clean}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}{{api_prefix}}/users/details",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "{{api_prefix}}",
+            "users",
+            "details"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Products - Public List",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}{{api_prefix}}/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "{{api_prefix}}",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "access_token",
+      "value": ""
+    }
+  ]
+}
