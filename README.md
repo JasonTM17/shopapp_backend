@@ -26,6 +26,32 @@ Spring Boot backend cho hệ thống ShopApp.
 
 ## Chạy Dự Án (Khuyến Nghị)
 
+### Cách nhanh nhất (Windows)
+
+```powershell
+.\start-all.cmd
+```
+
+Lệnh trên sẽ:
+
+- dựng MySQL, Redis, Kafka, Zookeeper
+- kiểm tra trạng thái container
+- import `database.sql` nếu schema đang trống
+- compile backend
+- chạy backend và đợi health endpoint sẵn sàng
+
+Tắt toàn bộ:
+
+```powershell
+.\stop-all.cmd
+```
+
+Reset sạch (xóa volumes):
+
+```powershell
+.\scripts\stop-all.ps1 -RemoveVolumes
+```
+
 ### 1) Clone source
 
 ```bash
@@ -75,6 +101,24 @@ curl -i http://localhost:8088/api/v1/actuator/health
 ```
 
 Kết quả mong đợi: `HTTP 200` và status `UP`.
+
+## Script Tự Động Hóa
+
+- `scripts/start-all.ps1`
+- `scripts/stop-all.ps1`
+- `start-all.cmd`
+- `stop-all.cmd`
+
+Ví dụ:
+
+```powershell
+.\scripts\start-all.ps1 -SkipBuild
+.\scripts\start-all.ps1 -SkipDbImport
+.\scripts\start-all.ps1 -ForceDbImport
+.\scripts\start-all.ps1 -NoBackend
+.\scripts\start-all.ps1 -ForegroundBackend
+.\scripts\stop-all.ps1 -RemoveVolumes
+```
 
 ## API Tài Liệu
 
