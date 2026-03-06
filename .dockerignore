@@ -1,0 +1,16 @@
+.git
+.github
+.idea
+.vscode
+.mvn/wrapper/maven-wrapper.jar
+target
+redis-data
+src/main/resources/logs
+**/.DS_Store
+.env
+.env.*
+database.sql
+deployment.yaml
+kafka-deployment.yaml
+docker-compose.yml
+prompts-deployment.txt
